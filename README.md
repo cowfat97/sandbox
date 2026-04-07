@@ -14,7 +14,7 @@
 | 层级 | 技术 |
 |------|------|
 | 前端 | Vue 3 + TypeScript + Vite + Tailwind CSS + Leaflet |
-| 后端 | Java Spring Boot（待开发） |
+| 后端 | Java 8 + Spring Boot 2.7 + MyBatis-Plus（DDD 架构） |
 | AI 模型 | Qwen-Plus（阿里云 DashScope） |
 | 数据库 | PostgreSQL |
 | 对象存储 | 阿里云 OSS |
@@ -33,7 +33,13 @@ war-trump-sandbox/
 │   │   └── mock/       # 模拟数据
 │   └── package.json
 │
-├── backend/            # 后端（待开发）
+├── backend/            # 后端
+│   ├── java/           # Java Spring Boot（DDD 架构）
+│   │   ├── taco-api/       # 接口层（Controller、DTO）
+│   │   ├── taco-application/ # 应用层（Service）
+│   │   ├── taco-domain/     # 领域层（Entity、Repository 接口）
+│   │   ├── taco-infrastructure/ # 基础设施层（Mapper、Config）
+│   │   └── taco-start/      # 启动模块
 │   └── python/         # Python 脚本
 │
 ├── docs/               # 文档
@@ -56,12 +62,25 @@ npm run build  # 构建生产版本
 npm run test   # 运行单元测试
 ```
 
-### 后端（待开发）
+### 后端
 
 ```bash
-cd backend
-# TODO: Spring Boot 项目初始化
+cd backend/java
+mvn clean compile           # 编译项目
+mvn spring-boot:run -pl taco-start  # 启动服务 http://localhost:8080
+mvn clean package           # 构建可执行 JAR
 ```
+
+**DDD 四层架构：**
+
+| 模块 | 职责 |
+|------|------|
+| taco-api | REST 控制器、DTO、请求校验 |
+| taco-application | 应用服务、领域对象编排 |
+| taco-domain | 领域实体、值对象、仓储接口 |
+| taco-infrastructure | 持久化实现、配置、工具类 |
+
+**API 文档：** 启动后访问 http://localhost:8080/doc.html
 
 ## API 接口
 
@@ -111,7 +130,8 @@ cd backend
 | 优先级 | 任务 | 状态 |
 |------|------|------|
 | P0 | 前端开发 | ✅ 已完成 |
-| P0 | 后端 API | 🚧 待开发 |
+| P0 | 后端框架搭建 | ✅ 已完成 |
+| P0 | 后端业务 API | 🚧 待开发 |
 | P0 | AI 处理流程 | 🚧 待开发 |
 | P1 | 部署上线 | 🚧 待开发 |
 
