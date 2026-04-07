@@ -34,11 +34,12 @@ const handleRegionClick = (regionName: string) => {
 
     <!-- 热点区域 -->
     <div class="flex items-center gap-2">
-      <span class="text-sm">🔥</span>
+      <span class="text-sm text-gray-500">热点区域:</span>
       <div class="flex gap-1">
         <span
           v-for="region in eventStore.hotRegions.slice(0, 5)"
           :key="region.name"
+          :data-region-name="region.name"
           class="text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded cursor-pointer transition-all hover:bg-red-100 hover:text-red-600 hover:scale-105"
           @click="handleRegionClick(region.name)"
         >

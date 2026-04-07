@@ -98,36 +98,33 @@ describe('EventStore', () => {
     })
   })
 
-  describe('setFilter / clearFilter', () => {
-    it('setFilter 应该设置当前筛选', async () => {
+  describe('setSelectedRegion', () => {
+    it('应该设置选中的热点区域', () => {
       const store = useEventStore()
-      await store.loadEvents()
 
-      store.setFilter('乌克兰')
+      store.setSelectedRegion('乌克兰')
 
-      expect(store.currentFilter).toBe('乌克兰')
+      expect(store.selectedRegion).toBe('乌克兰')
     })
 
-    it('filteredEvents 应该返回筛选后的事件', async () => {
+    it('应该清除选中的热点区域', () => {
       const store = useEventStore()
-      await store.loadEvents()
 
-      store.setFilter('乌克兰')
+      store.setSelectedRegion('乌克兰')
+      store.setSelectedRegion(null)
 
-      store.filteredEvents.forEach(event => {
-        expect(event.country).toBe('乌克兰')
-      })
+      expect(store.selectedRegion).toBeNull()
     })
+  })
 
-    it('clearFilter 应该清除筛选', async () => {
+  describe('clearError', () => {
+    it('应该清除错误信息', () => {
       const store = useEventStore()
-      await store.loadEvents()
+      store.error = '测试错误'
 
-      store.setFilter('乌克兰')
-      store.clearFilter()
+      store.clearError()
 
-      expect(store.currentFilter).toBeNull()
-      expect(store.filteredEvents.length).toBe(store.allEvents.length)
+      expect(store.error).toBeNull()
     })
   })
 
