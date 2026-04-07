@@ -86,3 +86,12 @@ knife4j:
   enable: true
   setting:
     language: zh-CN
+
+# 阿里云 OSS 配置
+aliyun:
+  oss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: ${ALIYUN_ACCESS_KEY_ID:your-access-key-id}
+    access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET:your-access-key-secret}
+    bucket-name: taco-summaries
+    prefix: summaries/
