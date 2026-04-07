@@ -1,0 +1,5 @@
+# 爬虫依赖
+duckduckgo-search>=4.0.0
+
+# Qwen API 依赖
+openai>=1.0.0
