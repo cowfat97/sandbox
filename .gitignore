@@ -41,6 +41,13 @@ target/
 *.jar
 *.war
 
+# Model weights (large files)
+model/*.bin
+model/*.gguf
+model/*.safetensors
+model/*.pt
+model/*.pth
+
 # Misc
 *.bak
 *.tmp
