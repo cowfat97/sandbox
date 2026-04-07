@@ -25,7 +25,7 @@ export interface WarEvent {
   updatedAt: string
   // 视角列表
   perspectives?: Perspective[]
-  // 事件摘要（后端从对象存储获取）
+  // 事件摘要
   summary?: string
 }
 
@@ -66,17 +66,6 @@ export interface PagedData<T> {
   total: number
   page: number
   pageSize: number
-}
-
-// 筛选参数
-export interface FilterParams {
-  page?: number
-  pageSize?: number
-  eventType?: EventType
-  severity?: Severity
-  country?: string
-  startDate?: string
-  endDate?: string
 }
 
 // 统计数据
@@ -122,17 +111,4 @@ export const SEVERITY_RADIUS: Record<Severity, number> = {
   3: 14,
   4: 17,
   5: 20
-}
-
-// 事件详情（含完整摘要）
-export interface WarEventDetail extends WarEvent {
-  fullSummary: string  // 完整摘要
-  relatedEvents?: number[]  // 相关事件 ID
-}
-
-// 国家搜索结果
-export interface CountryResult {
-  name: string
-  code: string
-  eventCount: number
 }

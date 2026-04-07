@@ -1,5 +1,18 @@
 import type { WarEvent, StatsData } from '@/types'
 
+// 获取动态日期
+const getDate = (daysAgo: number): string => {
+  const date = new Date()
+  date.setDate(date.getDate() - daysAgo)
+  return date.toISOString().split('T')[0]
+}
+
+const getDateTime = (daysAgo: number): string => {
+  const date = new Date()
+  date.setDate(date.getDate() - daysAgo)
+  return date.toISOString()
+}
+
 // 模拟事件数据
 export const mockEvents: WarEvent[] = [
   {
@@ -13,10 +26,10 @@ export const mockEvents: WarEvent[] = [
     severity: 4,
     source: 'NewsAPI',
     sourceUrl: 'https://example.com/1',
-    eventDate: '2024-01-15',
+    eventDate: getDate(2),
     status: 'processed',
-    createdAt: '2024-01-15T10:00:00Z',
-    updatedAt: '2024-01-15T10:00:00Z',
+    createdAt: getDateTime(2),
+    updatedAt: getDateTime(2),
     summary: '俄乌冲突持续升级，顿涅茨克地区成为主要战场。双方在阿夫杰耶夫卡方向展开激烈争夺，俄军持续推进。乌克兰方面呼吁西方增加军事援助，冲突造成大量平民伤亡和人道主义危机。',
     perspectives: [
       { name: '乌克兰', latitude: 48.0, longitude: 37.5, zoom: 6, summary: '【乌克兰视角】俄军持续进攻顿涅茨克地区，乌军顽强抵抗。乌克兰总统呼吁国际社会提供更多军事援助，称俄军侵略造成大量平民伤亡。乌克兰方面强调保卫领土完整的决心，呼吁西方国家加大对俄制裁力度。' },
@@ -34,10 +47,10 @@ export const mockEvents: WarEvent[] = [
     severity: 5,
     source: 'NewsAPI',
     sourceUrl: 'https://example.com/2',
-    eventDate: '2024-01-14',
+    eventDate: getDate(3),
     status: 'processed',
-    createdAt: '2024-01-14T08:00:00Z',
-    updatedAt: '2024-01-14T08:00:00Z',
+    createdAt: getDateTime(3),
+    updatedAt: getDateTime(3),
     summary: '中东局势紧张升级，美国、以色列与伊朗之间的对抗加剧。伊朗核设施遭到网络攻击，以色列指责伊朗支持地区武装组织。美国向中东增派航母战斗群，三方关系跌至冰点，地区战争风险上升。',
     perspectives: [
       { name: '美国', latitude: 38.9, longitude: -77.0, zoom: 4, summary: '【美国视角】美国向中东增派航母战斗群，展示对盟友以色列的支持。美方称伊朗核活动威胁地区安全，呼吁国际社会共同遏制伊朗扩张。美国强调维护中东稳定的重要性，将继续对伊朗实施制裁。' },
@@ -56,10 +69,10 @@ export const mockEvents: WarEvent[] = [
     severity: 2,
     source: 'NewsAPI',
     sourceUrl: 'https://example.com/3',
-    eventDate: '2024-01-13',
+    eventDate: getDate(4),
     status: 'processed',
-    createdAt: '2024-01-13T06:00:00Z',
-    updatedAt: '2024-01-13T06:00:00Z',
+    createdAt: getDateTime(4),
+    updatedAt: getDateTime(4),
     summary: '印巴边境拉达克地区发生小规模武装摩擦，双方巡逻队在争议地区遭遇并交火。印方称巴方率先越界，巴方则予以否认。双方已展开外交磋商，局势暂时可控。',
     perspectives: [
       { name: '印度', latitude: 34.5, longitude: 77.5, zoom: 6, summary: '【印度视角】巴基斯坦巡逻队越境挑衅，印度军队被迫自卫反击。印度呼吁巴基斯坦遵守边境协议，停止支持越境活动。印方强调维护边境安全的决心，将通过外交途径解决争端。' },
@@ -77,10 +90,10 @@ export const mockEvents: WarEvent[] = [
     severity: 4,
     source: 'ACLED',
     sourceUrl: 'https://example.com/4',
-    eventDate: '2024-01-12',
+    eventDate: getDate(5),
     status: 'processed',
-    createdAt: '2024-01-12T12:00:00Z',
-    updatedAt: '2024-01-12T12:00:00Z',
+    createdAt: getDateTime(5),
+    updatedAt: getDateTime(5),
     summary: '叙利亚内战进入第13年，政府军与反对派武装在伊德利卜省持续交战。土耳其支持的武装力量与库尔德武装在北部地区发生冲突，平民持续遭受苦难，数百万人流离失所。',
     perspectives: [
       { name: '叙利亚', latitude: 33.5, longitude: 36.3, zoom: 6, summary: '【叙利亚政府视角】政府军持续推进，打击恐怖组织和反对派武装。叙利亚呼吁国际社会停止对反对派的资助，尊重叙利亚主权。政府强调恢复国家稳定的重要性，将继续打击恐怖主义。' }
@@ -97,10 +110,10 @@ export const mockEvents: WarEvent[] = [
     severity: 5,
     source: 'ACLED',
     sourceUrl: 'https://example.com/5',
-    eventDate: '2024-01-10',
+    eventDate: getDate(6),
     status: 'processed',
-    createdAt: '2024-01-10T09:00:00Z',
-    updatedAt: '2024-01-10T09:00:00Z',
+    createdAt: getDateTime(6),
+    updatedAt: getDateTime(6),
     summary: '苏丹武装部队与快速支援部队在首都喀土穆爆发激烈战斗，已造成数千人死亡。医院遭到轰炸，基础设施严重受损，超过700万人被迫逃离家园。国际社会呼吁双方停火谈判。',
     perspectives: [
       { name: '苏丹', latitude: 15.5, longitude: 32.5, zoom: 6, summary: '【苏丹政府视角】政府军致力于恢复国家秩序，打击叛乱武装。苏丹呼吁国际社会提供人道主义援助，帮助重建基础设施。政府强调保护平民安全，呼吁各方停火谈判。' }

@@ -12,7 +12,6 @@ export const useEventStore = defineStore('event', () => {
   const stats = ref<StatsData>(mockStats)
   const selectedRegion = ref<string | null>(null)
   const mapBounds = ref<MapBounds | null>(null)
-  const currentFilter = ref<string | null>(null) // 当前筛选的国家
 
   // 计算属性
   const totalCount = computed(() => stats.value.totalCount)
@@ -20,14 +19,6 @@ export const useEventStore = defineStore('event', () => {
   const hotRegions = computed(() => stats.value.hotRegions)
   const byType = computed(() => stats.value.byType)
   const bySeverity = computed(() => stats.value.bySeverity)
-
-  // 筛选后的事件列表（用于 EventList 显示）
-  const filteredEvents = computed(() => {
-    if (!currentFilter.value) {
-      return allEvents.value
-    }
-    return allEvents.value.filter(e => e.country === currentFilter.value)
-  })
 
   // 加载事件列表（使用模拟数据）
   const loadEvents = async () => {
@@ -94,16 +85,6 @@ export const useEventStore = defineStore('event', () => {
     selectedRegion.value = region
   }
 
-  // 设置筛选国家
-  const setFilter = (country: string | null) => {
-    currentFilter.value = country
-  }
-
-  // 清除筛选
-  const clearFilter = () => {
-    currentFilter.value = null
-  }
-
   // 清除错误
   const clearError = () => {
     error.value = null
@@ -112,7 +93,6 @@ export const useEventStore = defineStore('event', () => {
   return {
     events,
     allEvents,
-    filteredEvents,
     loading,
     error,
     pageParams,
@@ -124,14 +104,11 @@ export const useEventStore = defineStore('event', () => {
     bySeverity,
     selectedRegion,
     mapBounds,
-    currentFilter,
     loadEvents,
     loadMapMarkers,
     loadStats,
     updatePageParams,
     setSelectedRegion,
-    setFilter,
-    clearFilter,
     clearError
   }
 })
