@@ -73,7 +73,7 @@ COMMENT ON COLUMN war_events.event_date IS '事件日期';
 COMMENT ON COLUMN war_events.status IS '状态: pending-待处理, processed-已处理, invalid-无效';
 COMMENT ON COLUMN war_events.summary_id IS 'OSS摘要文件ID';
 COMMENT ON COLUMN war_events.summary IS '摘要内容（可选，用于缓存）';
-COMMENT ON COLUMN war_events.perspectives IS '多视角JSON数组';
+COMMENT ON COLUMN war_events.perspectives IS '多视角JSON数组，每个视角包含 name/latitude/longitude/zoom/summaryId';
 COMMENT ON COLUMN war_events.created_at IS '创建时间';
 COMMENT ON COLUMN war_events.updated_at IS '更新时间';
 COMMENT ON COLUMN war_events.deleted IS '逻辑删除标记 0-未删除 1-已删除';
@@ -131,7 +131,7 @@ CREATE TRIGGER update_war_events_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
--- perspectives JSON 结构校验触发器（可选）
+-- perspectives JSON 结构校验触发器
 CREATE OR REPLACE FUNCTION validate_perspectives()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -146,8 +146,9 @@ BEGIN
             WHERE elem ? 'name' = false
                OR elem ? 'latitude' = false
                OR elem ? 'longitude' = false
+               OR elem ? 'summaryId' = false
         ) THEN
-            RAISE EXCEPTION 'each perspective must have name, latitude, longitude fields';
+            RAISE EXCEPTION 'each perspective must have name, latitude, longitude, summaryId fields';
         END IF;
     END IF;
     RETURN NEW;
@@ -166,17 +167,17 @@ CREATE TRIGGER validate_war_events_perspectives
 
 INSERT INTO war_events (title, country, location_name, latitude, longitude, event_type, severity, source, source_url, event_date, status, perspectives) VALUES
 ('俄乌边境军事冲突', '乌克兰', '顿涅茨克', 48.0159, 37.8028, 'military_conflict', 5, '路透社', 'https://example.com/news/1', CURRENT_DATE - INTERVAL '2 days', 'processed',
- '[{"name": "乌克兰", "latitude": 48.0159, "longitude": 37.8028, "zoom": 6}, {"name": "俄罗斯", "latitude": 55.7558, "longitude": 37.6173, "zoom": 5}]'::jsonb),
+ '[{"name": "乌克兰", "latitude": 48.0159, "longitude": 37.8028, "zoom": 6, "summaryId": "p001-ukraine"}, {"name": "俄罗斯", "latitude": 55.7558, "longitude": 37.6173, "zoom": 5, "summaryId": "p001-russia"}]'::jsonb),
 
 ('叙利亚恐怖袭击事件', '叙利亚', '大马士革', 33.5138, 36.2765, 'terrorist_attack', 4, 'BBC', 'https://example.com/news/2', CURRENT_DATE - INTERVAL '3 days', 'processed',
- '[{"name": "叙利亚政府", "latitude": 33.5138, "longitude": 36.2765, "zoom": 6}]'::jsonb),
+ '[{"name": "叙利亚政府", "latitude": 33.5138, "longitude": 36.2765, "zoom": 6, "summaryId": "p002-syria"}]'::jsonb),
 
 ('伊朗政治动荡', '伊朗', '德黑兰', 35.6892, 51.3890, 'political_unrest', 3, 'CNN', 'https://example.com/news/3', CURRENT_DATE - INTERVAL '4 days', 'processed',
- '[{"name": "伊朗政府", "latitude": 35.6892, "longitude": 51.3890, "zoom": 5}]'::jsonb),
+ '[{"name": "伊朗政府", "latitude": 35.6892, "longitude": 51.3890, "zoom": 5, "summaryId": "p003-iran"}]'::jsonb),
 
 ('印巴边境冲突', '印度', '克什米尔', 34.1526, 74.5765, 'border_clash', 4, '新华社', 'https://example.com/news/4', CURRENT_DATE - INTERVAL '5 days', 'processed',
- '[{"name": "印度", "latitude": 34.1526, "longitude": 74.5765, "zoom": 6}, {"name": "巴基斯坦", "latitude": 33.6844, "longitude": 73.0479, "zoom": 6}]'::jsonb),
+ '[{"name": "印度", "latitude": 34.1526, "longitude": 74.5765, "zoom": 6, "summaryId": "p004-india"}, {"name": "巴基斯坦", "latitude": 33.6844, "longitude": 73.0479, "zoom": 6, "summaryId": "p004-pakistan"}]'::jsonb),
 
 ('以色列军事行动', '以色列', '加沙地带', 31.3547, 34.3088, 'military_conflict', 5, '美联社', 'https://example.com/news/5', CURRENT_DATE - INTERVAL '6 days', 'processed',
- '[{"name": "以色列", "latitude": 31.3547, "longitude": 34.3088, "zoom": 7}, {"name": "巴勒斯坦", "latitude": 31.3547, "longitude": 34.3088, "zoom": 7}]'::jsonb)
+ '[{"name": "以色列", "latitude": 31.3547, "longitude": 34.3088, "zoom": 7, "summaryId": "p005-israel"}, {"name": "巴勒斯坦", "latitude": 31.3547, "longitude": 34.3088, "zoom": 7, "summaryId": "p005-palestine"}]'::jsonb)
 ON CONFLICT DO NOTHING;

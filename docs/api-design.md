@@ -143,15 +143,36 @@
 
 ## 视角结构
 
-```typescript
-interface Perspective {
-  name: string       // 视角名称
-  latitude: number   // 纬度
-  longitude: number  // 经度
-  zoom?: number      // 缩放级别，默认 5
-  summary?: string   // 视角摘要（可选）
+**数据库存储（JSONB）：**
+```json
+{
+  "name": "乌克兰",
+  "latitude": 48.0159,
+  "longitude": 37.8028,
+  "zoom": 6,
+  "summaryId": "p001-ukraine"
 }
 ```
+
+**API 返回（后端从 OSS 获取摘要）：**
+```json
+{
+  "name": "乌克兰",
+  "latitude": 48.0159,
+  "longitude": 37.8028,
+  "zoom": 6,
+  "summary": "乌克兰军方表示..."
+}
+```
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| name | string | 视角名称 |
+| latitude | number | 纬度 |
+| longitude | number | 经度 |
+| zoom | number | 缩放级别，默认 5 |
+| summaryId | string | OSS 摘要 ID（仅存储） |
+| summary | string | 视角摘要（API 返回） |
 
 ---
 
